@@ -25,6 +25,16 @@ yellow = pygame.Color(255, 205, 0)
 bright_yellow = pygame.Color(255, 255, 0)
 
 game = Game()
+
+
+bg_front = pygame.image.load("images/bg_front.png")
+bg_front = pygame.transform.scale(bg_front,(game.settings.width * 15, game.settings.height * 15)) #resizing the background image to the size of the screen 
+
+bg_game = pygame.image.load("images/bg_game.png") #importing background image for inside the game
+bg_game = pygame.transform.scale(bg_game,(game.settings.width * 15, game.settings.height * 15))   
+
+
+
 rect_len = game.settings.rect_len
 snake = game.snake
 pygame.init()
@@ -41,7 +51,7 @@ def text_objects(text, font, color=black):
 
 
 def message_display(text, x, y, color=black):
-    large_text = pygame.font.SysFont('comicsansms', 50)
+    large_text = pygame.font.Font('fonts/mrsmonster.ttf', 70) #importing an external font that suits the game effects
     text_surf, text_rect = text_objects(text, large_text, color)
     text_rect.center = (x, y)
     screen.blit(text_surf, text_rect)
@@ -61,7 +71,7 @@ def button(msg, x, y, w, h, inactive_color, active_color, action=None, parameter
     else:
         pygame.draw.rect(screen, inactive_color, (x, y, w, h))
 
-    smallText = pygame.font.SysFont('comicsansms', 20)
+    smallText = pygame.font.SysFont(None, 20)
     TextSurf, TextRect = text_objects(msg, smallText)
     TextRect.center = (x + (w / 2), y + (h / 2))
     screen.blit(TextSurf, TextRect)
@@ -86,7 +96,7 @@ def initial_interface():
             if event.type == pygame.QUIT:
                 pygame.quit()
 
-        screen.fill(white)
+        screen.blit(bg_front, [0,0]) #this is used to display the background image on the front screen
         message_display('Gluttonous', game.settings.width / 2 * 15, game.settings.height / 4 * 15)
 
         button('Go!', 80, 240, 80, 40, green, bright_green, game_loop, 'human')
@@ -108,11 +118,11 @@ def game_loop(player, fps=10):
 
         game.do_move(move)
 
-        screen.fill(black)
+        screen.blit(bg_game, [0,0]) #this is used to display the background image on the game screen
 
         game.snake.blit(rect_len, screen)
         game.strawberry.blit(screen)
-        game.blit_score(white, screen)
+        game.blit_score(black, screen)
 
         pygame.display.flip()
 
