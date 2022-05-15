@@ -36,7 +36,6 @@ bg_game = pygame.image.load("images/bg_game.png") #importing background image fo
 bg_game = pygame.transform.scale(bg_game,(game.settings.width * 15, game.settings.height * 15))  #making the background fit the dimensions of the game
 
 
-
 rect_len = game.settings.rect_len #fetching length attribute from game class
 snake = game.snake #assigning snake attribute from game class to variable snake
 pygame.init()
@@ -44,13 +43,15 @@ fpsClock = pygame.time.Clock() #used for timing the game
 screen = pygame.display.set_mode((game.settings.width * 15, game.settings.height * 15)) #setting screen dimensions
 pygame.display.set_caption('Gluttonous') #appears at the top of the window
 
-crash_sound = pygame.mixer.Sound('./sound/crash.wav') #variable for sound
+crash_sound = pygame.mixer.Sound('./sound/crash.wav') #loading crash sounds
 
+def theme_music(): #adding background music 
+    pygame.mixer.music.load('./sound/jungle_music.wav')
+    pygame.mixer.music.play(-1)
 
 def text_objects(text, font, color=black):
     text_surface = font.render(text, True, color)
     return text_surface, text_surface.get_rect()
-
 
 def message_display(text, x, y, color=black): #used to display messages in the game
     large_text = pygame.font.Font('fonts/mrsmonster.ttf', 70) #importing an external font that suits the game effects
@@ -117,9 +118,10 @@ def initial_interface():
 
 def game_loop(player, fps=10):
     game.restart_game()
+    theme_music() #playing background music
 
     while not game.game_end(): #while the snake hasn't hit the boundary
-
+        
         pygame.event.pump()
 
         move = human_move() #user command
