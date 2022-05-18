@@ -78,11 +78,14 @@ def button(msg, x, y, w, h, inactive_color, active_color, action=None, parameter
             else:
                 action()
     else:
-        print(f'inactive color: {inactive_color}')
+        # print(f'inactive color: {inactive_color}')
         pygame.draw.rect(screen, inactive_color, (x, y, w, h))
 
+    #setting the font and background of the text
     smallText = pygame.font.SysFont(None, 20)
+    print(f'small text: {smallText}')
     TextSurf, TextRect = text_objects(msg, smallText)
+    print(f'text surf: {TextSurf}, text rectangle: {TextRect}')
     TextRect.center = (x + (w / 2), y + (h / 2))
     screen.blit(TextSurf, TextRect)
 
