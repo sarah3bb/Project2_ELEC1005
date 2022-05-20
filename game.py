@@ -150,7 +150,9 @@ class Game:
         #turning the directions: right, left, up and down to integers
         direction_dict = {value : key for key,value in self.move_dict.items()}
         return direction_dict[direction]
-        
+    
+   
+
     def do_move(self, move):
         move_dict = self.move_dict
         
@@ -177,10 +179,13 @@ class Game:
         #update the snake positions
         self.snake.update()
         
+        food_sound = pygame.mixer.Sound('./sound/food.wav') #loading food eatten sounds
+        
         #if the strawberry is in the same position as the snake, the snake gains the strawberry and the score is incremented 
         if self.snake.position == self.strawberry.position:
             self.strawberry.random_pos(self.snake)
             reward = 1
+            pygame.mixer.Sound.play(food_sound)
             self.snake.score += 1
         else:
             self.snake.segments.pop()
