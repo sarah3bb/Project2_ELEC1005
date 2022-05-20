@@ -9,6 +9,7 @@ import pygame
 import time
 from pygame.locals import KEYDOWN, K_RIGHT, K_LEFT, K_UP, K_DOWN, K_ESCAPE
 from pygame.locals import QUIT
+import random
 
 from game import Game
 
@@ -29,10 +30,13 @@ bright_yellow = pygame.Color(255, 255, 0)
 game = Game()
 
 
-bg_front = pygame.image.load("images/bg_front.png")
+# bg_front = pygame.image.load("images/bg_front.png")
+bg_front = pygame.image.load("images/galaxy2.jpg")
 bg_front = pygame.transform.scale(bg_front,(game.settings.width * 15, game.settings.height * 15)) #resizing the background image to the size of the screen 
 
-bg_game = pygame.image.load("images/bg_game.png") #importing background image for inside the game
+# bg_game = pygame.image.load("images/bg_game.png")
+bg_game = pygame.image.load("images/galaxy2.png") #importing background image for inside the game
+# bg_game = pygame.image.load("images/snake_red.png")
 bg_game = pygame.transform.scale(bg_game,(game.settings.width * 15, game.settings.height * 15))  #making the background fit the dimensions of the game
 
 
@@ -44,6 +48,8 @@ screen = pygame.display.set_mode((game.settings.width * 15, game.settings.height
 pygame.display.set_caption('Gluttonous') #appears at the top of the window
 
 crash_sound = pygame.mixer.Sound('./sound/crash.wav') #loading crash sounds
+
+# eating_sound = pygame.mixer.Sound('./sound/eating.mp3')  
 
 def theme_music(): #adding background music 
     pygame.mixer.music.load('./sound/jungle_music.wav')
@@ -61,20 +67,20 @@ def message_display(text, x, y, color=black): #used to display messages in the g
     pygame.display.update()
 
 
-def button(msg, x, y, w, h, inactive_color, active_color, action=None, parameter=None):
+def button(msg, x, y, w, h, inactive_color, active_color, action=None, parameter=None, mode=None):
     #used to 
     mouse = pygame.mouse.get_pos()
     click = pygame.mouse.get_pressed()
     if x + w > mouse[0] > x and y + h > mouse[1] > y:
-        print(f'x in button (IF) {x}')
-        print(f'y in button (IF) {y}')
-        print(f'w in button (IF) {w}')
-        print(f'h in button (IF) {h}')
-        print(f'active color: {active_color}')
+        # print(f'x in button (IF) {x}')
+        # print(f'y in button (IF) {y}')
+        # print(f'w in button (IF) {w}')
+        # print(f'h in button (IF) {h}')
+        # print(f'active color: {active_color}')
         pygame.draw.rect(screen, active_color, (x, y, w, h))
         if click[0] == 1 and action != None:
-            if parameter != None:
-                action(parameter)
+            if parameter != None and mode != None:
+                action(parameter, mode)
             else:
                 action()
     else:
@@ -83,9 +89,9 @@ def button(msg, x, y, w, h, inactive_color, active_color, action=None, parameter
 
     #setting the font and background of the text
     smallText = pygame.font.SysFont(None, 20)
-    print(f'small text: {smallText}')
+    # print(f'small text: {smallText}')
     TextSurf, TextRect = text_objects(msg, smallText)
-    print(f'text surf: {TextSurf}, text rectangle: {TextRect}')
+    # print(f'text surf: {TextSurf}, text rectangle: {TextRect}')
     TextRect.center = (x + (w / 2), y + (h / 2))
     screen.blit(TextSurf, TextRect)
 
@@ -100,6 +106,14 @@ def crash(): #plays the crashing when the snake hits the boundry
     message_display('crashed', game.settings.width / 2 * 15, game.settings.height / 3 * 15, white)
     time.sleep(1)
 
+# class Eating_interface:
+
+#     def __init__(self):
+#         pass
+
+#     def eat(self):
+#         pygame.mixer.Sound.play(eating_sound) #playing eating music
+
 
 def initial_interface():
     intro = True
@@ -112,14 +126,31 @@ def initial_interface():
         screen.blit(bg_front, [0,0]) #this is used to display the background image on the front screen
         message_display('Gluttonous', game.settings.width / 2 * 15, game.settings.height / 4 * 15) #displays the name of the game
 
-        button('Go!', 80, 240, 80, 40, green, bright_green, game_loop, 'human') #creating button go to play game
-        button('Quit', 270, 240, 80, 40, red, bright_red, quitgame) #creating button quit to end game
+        # button('Go!', 80, 240, 80, 40, green, bright_green, game_loop, 'human') #creating button go to play game
+        button('Easy', 40, 240, 80, 40, green, bright_green, game_loop, 'human', 1)
+        # button('Easy', 40, 240, 80, 40, green, game_loop, 'human', 1)
+        # if easy:
+        #     print(easy)
+        button('Normal', 130, 240, 80, 40, green, bright_green, game_loop, 'human', 2)
+        button('Hard', 220, 240, 80, 40, green, bright_green, game_loop, 'human', 3)
+        button('Quit', 310, 240, 80, 40, red, bright_red, quitgame) #creating button quit to end game
 
         pygame.display.update() #udpates the changes as long as the game is running
         pygame.time.Clock().tick(15) #makes the game run at 15 frames per second (Sets the pace of the game)
 
 
-def game_loop(player, fps=10):
+# def game_loop(player, fps=10):
+def game_loop(player, mode):
+    fps = 5
+    if mode == 1:
+        print("easy")
+        fps = 3
+    elif mode == 2:
+        # print("hard or medium")
+        fps = 7
+    elif mode == 3:
+        # print("hard or medium")
+        fps = 15
     game.restart_game()
     theme_music() #playing background music
 
@@ -128,22 +159,59 @@ def game_loop(player, fps=10):
         pygame.event.pump()
 
         move = human_move() #user command
-        fps = 5
+        # fps = 20
 
         game.do_move(move) #make the snake move
 
+        game.get_enemy().move(screen)
+
+        # game.get_enemy1().move(screen)
+        # game.get_enemy2().move(screen)
+        # game.get_enemy3().move(screen)
+
         screen.blit(bg_game, [0,0]) #this is used to display the background image on the game screen
+
+        ind= random.randint(1,8)
+        yp = random.randint(40, 400)
+        game.create_planet(ind, yp)
 
         game.snake.blit(rect_len, screen)
         game.strawberry.blit(screen)
+        game.enemy.blit(screen)
+
+        # game.enemy1.blit(screen)
+        # game.enemy2.blit(screen)
+        # game.enemy3.blit(screen)
         game.blit_score(black, screen)
 
         pygame.display.flip()
 
         fpsClock.tick(fps) #runs at 5 frames per second
 
+    # while not game.game_end():
+    #     pygame.event.pump()
+    #     fps = 40
+
+    #     game.get_enemy().move(screen)
+    #     ind= random.randint(1,8)
+    #     yp = random.randint(40, 400)
+    #     game.create_planet(ind, yp)
+    #     game.enemy.blit(screen)
+    #     # game.enemy1.blit(screen)
+    #     # game.enemy2.blit(screen)
+    #     # game.enemy3.blit(screen)
+    #     # game.blit_score(black, screen)
+
+    #     pygame.display.flip()
+
+    #     fpsClock.tick(fps) #runs at 5 frames per second
+        
+
     crash() #snake hits the boundary and the player loses
 
+
+
+    
 
 def human_move():
     direction = snake.facing
