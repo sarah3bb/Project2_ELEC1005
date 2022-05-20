@@ -103,7 +103,9 @@ def quitgame(): #used to close the window when quit is pressed
 
 def crash(): #plays the crashing when the snake hits the boundry 
     pygame.mixer.Sound.play(crash_sound)
-    message_display('crashed', game.settings.width / 2 * 15, game.settings.height / 3 * 15, white)
+    message_display('CRASHED', game.settings.width / 2 * 15, game.settings.height / 3 * 15, white)
+    message_display('Score',game.self.snake.score, game.settings.width / 2 * 15, game.settings.height / 3 * 15, white)
+
     time.sleep(1)
 
 # class Eating_interface:
