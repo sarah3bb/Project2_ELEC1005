@@ -9,29 +9,34 @@ import numpy as np
 
 class Settings:
     def __init__(self):
-        self.width = 28
+        #setting dimensions of the screen
+        self.width = 28 
         self.height = 28
         self.rect_len = 15
 
 class Snake:
     def __init__(self):
-        
+        #setting the image for the head of the snake in different positions in the game        
         self.image_up = pygame.image.load('images/head_up.bmp')
         self.image_down = pygame.image.load('images/head_down.bmp')
         self.image_left = pygame.image.load('images/head_left.bmp')
         self.image_right = pygame.image.load('images/head_right.bmp')
 
+        #setting the iamge for the tail of the snake in different positions in the game
         self.tail_up = pygame.image.load('images/tail_up.bmp')
         self.tail_down = pygame.image.load('images/tail_down.bmp')
         self.tail_left = pygame.image.load('images/tail_left.bmp')
         self.tail_right = pygame.image.load('images/tail_right.bmp')
             
+        #setting the image for the body of the snake
         self.image_body = pygame.image.load('images/body.bmp')
 
+        #the snake starts with facing right in the game
         self.facing = "right"
         self.initialize()
 
     def initialize(self):
+        #initializing the game for a new player, setting the position for the snake and the initial score of the user
         self.position = [6, 6]
         self.segments = [[6 - i, 6] for i in range(3)]
         self.score = 0
@@ -61,11 +66,15 @@ class Snake:
         else:
             screen.blit(self.tail_right, (x, y))  
     
+
+    #
     def blit(self, rect_len, screen):
         self.blit_head(self.segments[0][0]*rect_len, self.segments[0][1]*rect_len, screen)                
         for position in self.segments[1:-1]:
+            print(f'POSITIONs: {position}')
             self.blit_body(position[0]*rect_len, position[1]*rect_len, screen)
-        self.blit_tail(self.segments[-1][0]*rect_len, self.segments[-1][1]*rect_len, screen)                
+        self.blit_tail(self.segments[-1][0]*rect_len, self.segments[-1][1]*rect_len, screen)
+        print(f' segments in blit: {self.segments}')                
             
     
     def update(self):
@@ -138,25 +147,37 @@ class Game:
         return state
     
     def direction_to_int(self, direction):
+        #turning the directions: right, left, up and down to integers
         direction_dict = {value : key for key,value in self.move_dict.items()}
         return direction_dict[direction]
         
     def do_move(self, move):
         move_dict = self.move_dict
         
+        #setting the sttribuet for the new direction
         change_direction = move_dict[move]
         
+        #if the new direction is right and the snake is not facing left, turn right because the snake cannot turn its head 180 degrees
         if change_direction == 'right' and not self.snake.facing == 'left':
+        # if change_direction == 'right' and not self.snake.facing == 'right':
             self.snake.facing = change_direction
+
+        #if the new direction is left and the snake is not facing right, turn left
         if change_direction == 'left' and not self.snake.facing == 'right':
             self.snake.facing = change_direction
+
+        #if the new direction is up and the snake is not facing down, turn upwards
         if change_direction == 'up' and not self.snake.facing == 'down':
             self.snake.facing = change_direction
+
+        #if the new direction is down and the snake is not facing up, turn downwards
         if change_direction == 'down' and not self.snake.facing == 'up':
             self.snake.facing = change_direction
 
+        #update the snake positions
         self.snake.update()
         
+        #if the strawberry is in the same position as the snake, the snake gains the strawberry and the score is incremented 
         if self.snake.position == self.strawberry.position:
             self.strawberry.random_pos(self.snake)
             reward = 1
@@ -165,6 +186,7 @@ class Game:
             self.snake.segments.pop()
             reward = 0
                 
+        #if the game ends, -1 is returned to indicate that it ended
         if self.game_end():
             return -1
                     
@@ -172,10 +194,12 @@ class Game:
     
     def game_end(self):
         end = False
+        #game ends if the snake touches the boundaries of the screen
         if self.snake.position[0] >= self.settings.width or self.snake.position[0] < 0:
             end = True
         if self.snake.position[1] >= self.settings.height or self.snake.position[1] < 0:
             end = True
+        #game ends if the snake touches its body with its head
         if self.snake.segments[0] in self.snake.segments[1:]:
             end = True
 
