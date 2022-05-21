@@ -166,7 +166,7 @@ def game_loop(player, mode): #where the game runs
 
         game.do_move(move) #make the snake move
 
-        game.get_enemy().move(screen) #makes the planets move 
+        game.get_planet().move(screen) #makes the planets move 
 
         # game.get_enemy1().move(screen)
         # game.get_enemy2().move(screen)
@@ -181,23 +181,15 @@ def game_loop(player, mode): #where the game runs
         #display all the objects on the screen
         game.snake.blit(rect_len, screen)
         game.strawberry.blit(screen)
-        game.enemy.blit(screen)
-        game.blit_score(black, screen)
-        # game.enemy1.blit(screen)
-        # game.enemy2.blit(screen)
-        # game.enemy3.blit(screen)
-        # game.blit_score(black, screen)
+        game.planet.blit(screen)
+        game.blit_score(yellow, screen)
 
         pygame.display.flip()
 
         fpsClock.tick(fps) #runs at 5 frames per second
         
-
     crash() #snake hits the boundary and the player loses
-
-
-
-    
+  
 
 def human_move():
     direction = snake.facing

@@ -47,36 +47,30 @@ class Snake:
         self.score = 0
         self.rect =  pygame.Surface.get_rect(self.image_right, topleft =(self.get_x(), self.get_y()))
 
-    def get_x(self):
+    def get_x(self): #returns x coordinate of the head of teh snake
         return self.segments[0][0]
         
-    def get_y(self):
+    def get_y(self): #returns y coordinate of the head of teh snake
         return self.segments[0][1]
 
-    def get_height(self):
-        return 15
-
-    def get_width(self):
-        return 15
-
-    def blit_body(self, x, y, screen):
+    def blit_body(self, x, y, screen): #making the body appear on the screen
         screen.blit(self.image_body, (x, y))
         
-    def blit_head(self, x, y, screen):
+    def blit_head(self, x, y, screen): #changing the image for the head of the snake when it truns and displaying it on the screen
+
         if self.facing == "up":
-            self.rect =  pygame.Surface.get_rect(self.image_up, topleft =(self.get_x(), self.get_y()))
             screen.blit(self.image_up, (x, y))
+
         elif self.facing == "down":
-            self.rect =  pygame.Surface.get_rect(self.image_down, topleft =(self.get_x(), self.get_y()))
             screen.blit(self.image_down, (x, y))  
+
         elif self.facing == "left":
-            self.rect =  pygame.Surface.get_rect(self.image_left, topleft =(self.get_x(), self.get_y()))
             screen.blit(self.image_left, (x, y))  
+
         else:
-            self.rect =  pygame.Surface.get_rect(self.image_right, topleft =(self.get_x(), self.get_y()))
             screen.blit(self.image_right, (x, y))  
             
-    def blit_tail(self, x, y, screen):
+    def blit_tail(self, x, y, screen): #changing the image for the tail of the snake when it truns and displaying it on the screen
         tail_direction = [self.segments[-2][i] - self.segments[-1][i] for i in range(2)]
         
         if tail_direction == [0, -1]:
@@ -90,7 +84,7 @@ class Snake:
     
 
     #
-    def blit(self, rect_len, screen):
+    def blit(self, rect_len, screen): #making the snake appear on the screen, makes calls to the blit_head and blit_tail functions
         self.blit_head(self.segments[0][0]*rect_len, self.segments[0][1]*rect_len, screen)                
         for position in self.segments[1:-1]:
             # print(f'POSITIONs: {position}')
@@ -99,7 +93,7 @@ class Snake:
         # print(f' segments in blit: {self.segments}')                
             
     
-    def update(self):
+    def update(self): #keep moving the snake in the direction that it is facing
         if self.facing == 'right':
             self.position[0] += 1
         if self.facing == 'left':
@@ -110,15 +104,17 @@ class Snake:
             self.position[1] += 1
         self.segments.insert(0, list(self.position))
         
-class Strawberry():
+class Strawberry(): #class for the food of the snake
     def __init__(self, settings):
+
+        #varibles for the settings of the game and the image of the food
         self.settings = settings
         
         self.style = str(random.randint(1, 8))
         self.image = pygame.image.load('images/food' + str(self.style) + '.bmp')        
         self.initialize()
         
-    def random_pos(self, snake):
+    def random_pos(self, snake): #makes the strawberry appear at random positions in the game
         self.style = str(random.randint(1, 8))
         self.image = pygame.image.load('images/food' + str(self.style) + '.bmp')                
         
@@ -131,16 +127,18 @@ class Strawberry():
         if self.position in snake.segments:
             self.random_pos(snake)
 
-    def blit(self, screen):
+    def blit(self, screen): #displaying the food on the screen
         screen.blit(self.image, [p * self.settings.rect_len for p in self.position])
    
-    def initialize(self):
+    def initialize(self): #setting initial position 
         self.position = [15, 10]
 
 
-class Enemy():
+class Planet():
     # vel = 5
     def __init__(self, settings, n, ypos):
+
+        #setting varibales for the class
         self.settings = settings
         self.x = 20
         # self.y = 50
@@ -152,7 +150,7 @@ class Enemy():
         self.path = [self.start, self.end]
         self.vel = 10
         self.walk = 0
-        self.image = pygame.image.load('images/watermelonEnemy.png')
+        # self.image = pygame.image.load('images/watermelonPlanet.png')
         self.image = pygame.image.load('images/planet' + str(n) + '.png')
 
 
@@ -160,45 +158,20 @@ class Enemy():
         self.rect =  pygame.Surface.get_rect(self.image, topleft = (self.get_x(), self.get_y()))        
         self.initialize()
 
-    def get_x(self):
+    def get_x(self): #returns x coordinate
         return self.x
         
-    def get_y(self):
+    def get_y(self): #returns y coordinate
         return self.y
 
-    def get_height(self):
+    def get_height(self): #returns height
         return self.height
 
-    def get_width(self):
-        return self.width
-        
-    # def get_x(self):
-    #     return self.
-        
-        # self.vel = 3
-        # self.x = 20
-        # self.y = 10
-        # self.end = 70
-        # self.path = [self.x, self.end]
-        
-    # def random_pos(self, snake):
-    #     # self.style = str(random.randint(1, 8))
-    #     self.image = pygame.image.load('images/watermelonEnemy.png')                
-        
-    #     # self.position[0] = random.randint(0, self.settings.width-3)
-    #     # self.position[1] = random.randint(0, self.settings.height-3)
+    def get_width(self): #returns width
+        return self.width     
 
-    #     # self.position[0] = random.randint(9, 19)
-    #     # self.position[1] = random.randint(9, 19)
-
-    #     self.position[0] = random.randint(6, 25)
-    #     self.position[1] = random.randint(6, 25)
-        
-    #     if self.position in snake.segments:
-    #         self.random_pos(snake)
-
-    def draw(self):
-        self.move()
+    # def draw(self):
+    #     self.move()
 
 
     # def move(self):
@@ -226,27 +199,26 @@ class Enemy():
     #             self.vel = -1 * self.vel
     #             self.walk = 0
 
-    def move(self, screen):
-        # print(f'\n\nIN MOVE: X pos: {self.x}, Y pos: {self.y} X vel: {self.vel}\n\n')
+    def move(self, screen): #makes the planets move
         self.x += self.vel
-        # screen.blit(self.image, (self.x, self.y))
-
         # if self.x >= self.end or self.x < self.start:
         #     self.vel = -1 * self.vel
 
-    def blit(self, screen):
+    def blit(self, screen): #display the image of the planet on the screen 
         # screen.blit(self.image, [p * self.settings.rect_len for p in self.position])
         screen.blit(self.image, (self.x, self.y))
    
-    def initialize(self):
+    def initialize(self): #initialize the coordinates
         self.position = [self.x, self.y]
         # self.draw()
       
         
-class Game:
+class Game: #class for the game
     """
     """
     def __init__(self):
+
+        #setting variables for the game class
         self.settings = Settings()
         self.snake = Snake()
         self.strawberry = Strawberry(self.settings)
@@ -254,38 +226,25 @@ class Game:
                           1 : 'down',
                           2 : 'left',
                           3 : 'right'}    
-        self.enemy = Enemy(self.settings, 1, 200)
-        # self.enemy2 = Enemy(self.settings, 2, 100)
-        # self.enemy3 = Enemy(self.settings, 3, 300)
-        self.eating_sound = pygame.mixer.Sound('./sound/eating.mp3')   
-        # self.eating = Eating_interface()
+        self.planet = Planet(self.settings, 1, 200)
+        # self.Planet2 = Planet(self.settings, 2, 100)
+        # self.Planet3 = Planet(self.settings, 3, 300)
+        self.eating_sound = pygame.mixer.Sound('./sound/eating.mp3')
 
-    # def get_enemy1(self):
-    #     return self.enemy1
+    def get_planet(self): #returns the planet on the screen in the game
+        return self.planet
 
-    # def get_enemy2(self):
-    #     return self.enemy2
-
-    # def get_enemy3(self):
-    #     return self.enemy3
-
-    def get_enemy(self):
-        return self.enemy
-
-    def create_planet(self, image_index, ypos):
+    def create_planet(self, image_index, ypos): #creates a new planet on the screen if one has already crossed the screen
         # print(f'\nIMAGE GIVEN: {image_index}, Y position: {ypos}\n\n\n')
-        if self.enemy.get_x() > 400:      
-            self.enemy = Enemy(self.settings, image_index, ypos)
+        if self.planet.get_x() > 400:      
+            self.planet = Planet(self.settings, image_index, ypos)
         
-    def restart_game(self):
+    def restart_game(self): #initialize all objects in the game
         self.snake.initialize()
         self.strawberry.initialize()
-        self.enemy.initialize()
-        # self.enemy1.initialize()
-        # self.enemy2.initialize()
-        # self.enemy3.initialize()
+        self.planet.initialize()
 
-    def current_state(self):         
+    def current_state(self): #retruns the coordinates of the body of the snake        
         state = np.zeros((self.settings.width+2, self.settings.height+2, 2))
         expand = [[0, 1], [0, -1], [-1, 0], [1, 0], [0, 2], [0, -2], [-2, 0], [2, 0]]
         k = 0
@@ -308,12 +267,10 @@ class Game:
         direction_dict = {value : key for key,value in self.move_dict.items()}
         return direction_dict[direction]
     
-   
-
     def do_move(self, move):
         move_dict = self.move_dict
         
-        #setting the sttribuet for the new direction
+        #setting the attribute for the new direction
         change_direction = move_dict[move]
         
         #if the new direction is right and the snake is not facing left, turn right because the snake cannot turn its head 180 degrees
@@ -353,7 +310,7 @@ class Game:
             reward = 0
 
 
-        # if self.snake.position == self.enemy.position:
+        # if self.snake.position == self.Planet.position:
 
                 
         #if the game ends, -1 is returned to indicate that it ended
@@ -372,25 +329,27 @@ class Game:
         #game ends if the snake touches its body with its head
         if self.snake.segments[0] in self.snake.segments[1:]:
             end = True
-        # if self.snake.position == self.enemy.position:
-        #     end = True
-
-        # if self.aabbintersect(self.snake, self.enemy):
-        #     end = True
-
-        # collide = self.snake.colliderect(self.enemy)
-        # if len(pygame.Rect.collidelistall(self.enemy.rect, self.snake.rect)) == 1:
-        #     end = True
-
-        # if pygame.Rect.colliderect(self.enemy.rect, self.snake.rect) == True:
-        #     end = True
 
         return end
+        # if self.snake.position == self.Planet.position:
+        #     end = True
 
-    def aabbintersect(self, e1, e2):
+        # if self.e1e2collide(self.snake, self.Planet):
+        #     end = True
+
+        # collide = self.snake.colliderect(self.Planet)
+        # if len(pygame.Rect.collidelistall(self.Planet.rect, self.snake.rect)) == 1:
+        #     end = True
+
+        # if pygame.Rect.colliderect(self.Planet.rect, self.snake.rect) == True:
+        #     end = True
+
+        # return end
+
+    def e1e2collide(self, e1, e2):
         return (e1.get_x() < (e2.get_x() + e2.get_width())) and ((e1.get_x() + e1.get_width()) > e2.get_x()) and (e1.get_y() < (e2.get_y() + e2.get_height())) and ((e1.get_x() + e1.get_height()) > e2.get_y())
     
-    def blit_score(self, color, screen):
+    def blit_score(self, color, screen): #display score on the screen
         font = pygame.font.SysFont(None, 25)
         text = font.render('Score: ' + str(self.snake.score), True, color)
         screen.blit(text, (6, 6)) #changed the positioning of this so it is easier to see
