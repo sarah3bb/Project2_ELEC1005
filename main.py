@@ -143,7 +143,7 @@ def initial_interface(): #initial screen of the game before the user strats play
 
 
 # def game_loop(player, fps=10):
-def game_loop(player, mode): #where the game runs
+def game_loop(player, mode, fps=10): #where the game runs
     fps = 5
     if mode == 1: #if the mode is easy, make it slower for user
         print("easy")
@@ -168,10 +168,6 @@ def game_loop(player, mode): #where the game runs
 
         game.get_planet().move(screen) #makes the planets move 
 
-        # game.get_enemy1().move(screen)
-        # game.get_enemy2().move(screen)
-        # game.get_enemy3().move(screen)
-
         screen.blit(bg_game, [0,0]) #this is used to display the background image on the game screen
 
         ind= random.randint(1,8)
@@ -182,15 +178,21 @@ def game_loop(player, mode): #where the game runs
         game.planet.blit(screen)
         game.snake.blit(rect_len, screen)
         game.strawberry.blit(screen)
-        # game.planet.blit(screen)
-        # game.enemy1.blit(screen)
-        # game.enemy2.blit(screen)
-        # game.enemy3.blit(screen)
+        
         game.blit_score(yellow, screen)
 
         pygame.display.flip() #updates the contents of the display
 
         fpsClock.tick(fps) #runs at 5 frames per second
+
+        
+        # game.get_enemy1().move(screen)
+        # game.get_enemy2().move(screen)
+        # game.get_enemy3().move(screen)
+        # game.planet.blit(screen)
+        # game.enemy1.blit(screen)
+        # game.enemy2.blit(screen)
+        # game.enemy3.blit(screen)
         
     crash() #snake hits the boundary and the player loses
   

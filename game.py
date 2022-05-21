@@ -45,7 +45,7 @@ class Snake:
         self.position = [6, 6]
         self.segments = [[6 - i, 6] for i in range(3)]
         self.score = 0
-        self.rect =  pygame.Surface.get_rect(self.image_right, topleft =(self.get_x(), self.get_y()))
+        # self.rect =  pygame.Surface.get_rect(self.image_right, topleft =(self.get_x(), self.get_y()))
 
     def get_x(self): #returns x coordinate of the head of teh snake
         return self.segments[0][0]
@@ -83,7 +83,7 @@ class Snake:
             screen.blit(self.tail_right, (x, y))  
     
 
-    #
+    
     def blit(self, rect_len, screen): #making the snake appear on the screen, makes calls to the blit_head and blit_tail functions
         self.blit_head(self.segments[0][0]*rect_len, self.segments[0][1]*rect_len, screen)                
         for position in self.segments[1:-1]:
@@ -133,36 +133,36 @@ class Strawberry(): #class for the food of the snake
     def initialize(self): #setting initial position 
         self.position = [15, 10]
 
-class Enemy(): #class for the food of the snake
-    def __init__(self, settings):
+# class Enemy(): #class for the food of the snake
+#     def __init__(self, settings):
 
-        #varibles for the settings of the game and the image of the food
-        self.settings = settings
+#         #varibles for the settings of the game and the image of the food
+#         self.settings = settings
         
-        self.image = pygame.image.load('images/watermelonEnemy.png')
-        self.image = pygame.transform.scale(self.image, (15, 15))
-        self.x = random.randint(10, 80)
-        self.y = random.randint(10, 80)
-        self.initialize(self.x, self.y)
+#         self.image = pygame.image.load('images/watermelonEnemy.png')
+#         self.image = pygame.transform.scale(self.image, (15, 15))
+#         self.x = random.randint(10, 80)
+#         self.y = random.randint(10, 80)
+#         self.initialize(self.x, self.y)
         
-    # def random_pos(self, snake): #makes the strawberry appear at random positions in the game
-    #     self.style = str(random.randint(1, 8))
-    #     self.image = pygame.image.load('images/food' + str(self.style) + '.bmp')                
+#     # def random_pos(self, snake): #makes the strawberry appear at random positions in the game
+#     #     self.style = str(random.randint(1, 8))
+#     #     self.image = pygame.image.load('images/food' + str(self.style) + '.bmp')                
         
-    #     self.position[0] = random.randint(0, self.settings.width-1)
-    #     self.position[1] = random.randint(0, self.settings.height-1)
+#     #     self.position[0] = random.randint(0, self.settings.width-1)
+#     #     self.position[1] = random.randint(0, self.settings.height-1)
 
-    #     self.position[0] = random.randint(9, 19)
-    #     self.position[1] = random.randint(9, 19)
+#     #     self.position[0] = random.randint(9, 19)
+#     #     self.position[1] = random.randint(9, 19)
         
-    #     if self.position in snake.segments:
-    #         self.random_pos(snake)
+#     #     if self.position in snake.segments:
+#     #         self.random_pos(snake)
 
-    def blit(self, screen): #displaying the food on the screen
-        screen.blit(self.image, [p * self.settings.rect_len for p in self.position])
+#     def blit(self, screen): #displaying the food on the screen
+#         screen.blit(self.image, [p * self.settings.rect_len for p in self.position])
    
-    def initialize(self, x, y): #setting initial position 
-        self.position = [x, y]
+#     def initialize(self, x, y): #setting initial position 
+#         self.position = [x, y]
 
 
 class Planet():
@@ -348,15 +348,15 @@ class Game: #class for the game
         #update the snake positions
         self.snake.update()
         
-        # food_sound = pygame.mixer.Sound('./sound/food.wav') #loading food eatten sounds
+        food_sound = pygame.mixer.Sound('./sound/food.wav') #loading food eatten sounds
         
         #if the strawberry is in the same position as the snake, the snake gains the strawberry and the score is incremented 
         if self.snake.position == self.strawberry.position:
             self.strawberry.random_pos(self.snake)
             reward = 1
-            # pygame.mixer.Sound.play(food_sound)
+            pygame.mixer.Sound.play(food_sound)
             self.snake.score += 1
-            pygame.mixer.Sound.play(self.eating_sound) #playing eating music
+            # pygame.mixer.Sound.play(self.eating_sound) #playing eating music
             # self.eating.eat()
 
 
@@ -378,11 +378,15 @@ class Game: #class for the game
         end = False
         #game ends if the snake touches the boundaries of the screen
         if self.snake.position[0] >= self.settings.width or self.snake.position[0] < 0:
+            print("out of boundary x")
             end = True
         if self.snake.position[1] >= self.settings.height or self.snake.position[1] < 0:
+            print("out of boundary y")
             end = True
         #game ends if the snake touches its body with its head
         if self.snake.segments[0] in self.snake.segments[1:]:
+        # if self.snake.segments[0] in self.snake.segments[2:]:
+            print("ate itself")
             end = True
 
         return end
