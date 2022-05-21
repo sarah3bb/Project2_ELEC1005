@@ -293,13 +293,13 @@ class Game: #class for the game
         #update the snake positions
         self.snake.update()
         
-        food_sound = pygame.mixer.Sound('./sound/food.wav') #loading food eatten sounds
+        # food_sound = pygame.mixer.Sound('./sound/food.wav') #loading food eatten sounds
         
         #if the strawberry is in the same position as the snake, the snake gains the strawberry and the score is incremented 
         if self.snake.position == self.strawberry.position:
             self.strawberry.random_pos(self.snake)
             reward = 1
-            pygame.mixer.Sound.play(food_sound)
+            # pygame.mixer.Sound.play(food_sound)
             self.snake.score += 1
             pygame.mixer.Sound.play(self.eating_sound) #playing eating music
             # self.eating.eat()
