@@ -133,6 +133,37 @@ class Strawberry(): #class for the food of the snake
     def initialize(self): #setting initial position 
         self.position = [15, 10]
 
+class Enemy(): #class for the food of the snake
+    def __init__(self, settings):
+
+        #varibles for the settings of the game and the image of the food
+        self.settings = settings
+        
+        self.image = pygame.image.load('images/watermelonEnemy.png')
+        self.image = pygame.transform.scale(self.image, (15, 15))
+        self.x = random.randint(10, 80)
+        self.y = random.randint(10, 80)
+        self.initialize(self.x, self.y)
+        
+    # def random_pos(self, snake): #makes the strawberry appear at random positions in the game
+    #     self.style = str(random.randint(1, 8))
+    #     self.image = pygame.image.load('images/food' + str(self.style) + '.bmp')                
+        
+    #     self.position[0] = random.randint(0, self.settings.width-1)
+    #     self.position[1] = random.randint(0, self.settings.height-1)
+
+    #     self.position[0] = random.randint(9, 19)
+    #     self.position[1] = random.randint(9, 19)
+        
+    #     if self.position in snake.segments:
+    #         self.random_pos(snake)
+
+    def blit(self, screen): #displaying the food on the screen
+        screen.blit(self.image, [p * self.settings.rect_len for p in self.position])
+   
+    def initialize(self, x, y): #setting initial position 
+        self.position = [x, y]
+
 
 class Planet():
     # vel = 5
@@ -227,6 +258,9 @@ class Game: #class for the game
                           2 : 'left',
                           3 : 'right'}    
         self.planet = Planet(self.settings, 1, 200)
+        # self.enemy1 = Enemy(self.settings)
+        # self.enemy2 = Enemy(self.settings)
+        # self.enemy3 = Enemy(self.settings)
         # self.Planet2 = Planet(self.settings, 2, 100)
         # self.Planet3 = Planet(self.settings, 3, 300)
         self.eating_sound = pygame.mixer.Sound('./sound/eating.mp3')
@@ -243,6 +277,27 @@ class Game: #class for the game
         self.snake.initialize()
         self.strawberry.initialize()
         self.planet.initialize()
+
+        # i = 0
+
+        # while i < 4:
+        #     xx = random.randint(10, 85)
+        #     yy = random.randint(10, 85)
+        #     self.initialize_e(xx, yy, i)
+        #     i+=1
+            # self.enemy1.initialize()
+            # self.enemy2.initialize()
+            # self.enemy3.initialize()
+
+    def initialize_e(self, x, y, i):
+        if i == 0:
+            self.enemy1.initialize(x, y)
+
+        elif i == 1:
+            self.enemy2.initialize(x, y)
+
+        else:
+            self.enemy3.initialize(x, y)
 
     def current_state(self): #retruns the coordinates of the body of the snake        
         state = np.zeros((self.settings.width+2, self.settings.height+2, 2))
@@ -329,6 +384,9 @@ class Game: #class for the game
         #game ends if the snake touches its body with its head
         if self.snake.segments[0] in self.snake.segments[1:]:
             end = True
+
+        # if self.snake.position[0] == self.enemy1.position or self.snake.position[0] == self.enemy2.position or self.snake.position[0] == self.enemy3.position:
+        #     end = True
 
         return end
         # if self.snake.position == self.Planet.position:

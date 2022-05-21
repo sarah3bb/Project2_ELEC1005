@@ -183,6 +183,9 @@ def game_loop(player, mode): #where the game runs
         game.snake.blit(rect_len, screen)
         game.strawberry.blit(screen)
         # game.planet.blit(screen)
+        # game.enemy1.blit(screen)
+        # game.enemy2.blit(screen)
+        # game.enemy3.blit(screen)
         game.blit_score(yellow, screen)
 
         pygame.display.flip() #updates the contents of the display
