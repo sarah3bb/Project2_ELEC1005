@@ -289,15 +289,15 @@ class Game: #class for the game
             # self.enemy2.initialize()
             # self.enemy3.initialize()
 
-    def initialize_e(self, x, y, i):
-        if i == 0:
-            self.enemy1.initialize(x, y)
+    # def initialize_e(self, x, y, i):
+    #     if i == 0:
+    #         self.enemy1.initialize(x, y)
 
-        elif i == 1:
-            self.enemy2.initialize(x, y)
+    #     elif i == 1:
+    #         self.enemy2.initialize(x, y)
 
-        else:
-            self.enemy3.initialize(x, y)
+    #     else:
+    #         self.enemy3.initialize(x, y)
 
     def current_state(self): #retruns the coordinates of the body of the snake        
         state = np.zeros((self.settings.width+2, self.settings.height+2, 2))
@@ -385,10 +385,12 @@ class Game: #class for the game
         if self.snake.segments[0] in self.snake.segments[1:]:
             end = True
 
+        return end
+
         # if self.snake.position[0] == self.enemy1.position or self.snake.position[0] == self.enemy2.position or self.snake.position[0] == self.enemy3.position:
         #     end = True
 
-        return end
+        
         # if self.snake.position == self.Planet.position:
         #     end = True
 
