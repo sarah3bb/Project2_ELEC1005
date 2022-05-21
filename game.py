@@ -346,7 +346,7 @@ class Game: #class for the game
 
         # return end
 
-    def e1e2collide(self, e1, e2):
+    def e1e2collide(self, e1, e2): #checks collision
         return (e1.get_x() < (e2.get_x() + e2.get_width())) and ((e1.get_x() + e1.get_width()) > e2.get_x()) and (e1.get_y() < (e2.get_y() + e2.get_height())) and ((e1.get_x() + e1.get_height()) > e2.get_y())
     
     def blit_score(self, color, screen): #display score on the screen

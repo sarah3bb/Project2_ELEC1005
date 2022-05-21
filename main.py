@@ -184,7 +184,7 @@ def game_loop(player, mode): #where the game runs
         game.planet.blit(screen)
         game.blit_score(yellow, screen)
 
-        pygame.display.flip()
+        pygame.display.flip() #updates the contents of the display
 
         fpsClock.tick(fps) #runs at 5 frames per second
         
