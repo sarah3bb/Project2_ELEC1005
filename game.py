@@ -263,7 +263,7 @@ class Game: #class for the game
         # self.enemy3 = Enemy(self.settings)
         # self.Planet2 = Planet(self.settings, 2, 100)
         # self.Planet3 = Planet(self.settings, 3, 300)
-        self.eating_sound = pygame.mixer.Sound('./sound/eating.mp3')
+        # self.eating_sound = pygame.mixer.Sound('./sound/eating.mp3')
 
     def get_planet(self): #returns the planet on the screen in the game
         return self.planet
