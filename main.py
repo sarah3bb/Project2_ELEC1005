@@ -179,9 +179,10 @@ def game_loop(player, mode): #where the game runs
         game.create_planet(ind, yp) #creates a new planet in the game
 
         #display all the objects on the screen
+        game.planet.blit(screen)
         game.snake.blit(rect_len, screen)
         game.strawberry.blit(screen)
-        game.planet.blit(screen)
+        # game.planet.blit(screen)
         game.blit_score(yellow, screen)
 
         pygame.display.flip() #updates the contents of the display
