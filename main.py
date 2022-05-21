@@ -127,7 +127,7 @@ def initial_interface(): #initial screen of the game before the user strats play
                 pygame.quit()
 
         screen.blit(bg_front, [0,0]) #this is used to display the background image on the front screen
-        message_display('Gluttonous', game.settings.width / 2 * 15, game.settings.height / 4 * 15) #displays the name of the game
+        message_display('Gluttonous', game.settings.width / 2 * 15, game.settings.height / 4 * 15, white) #displays the name of the game
 
         # button('Go!', 80, 240, 80, 40, green, bright_green, game_loop, 'human') #creating button go to play game
         button('Easy', 40, 240, 80, 40, green, bright_green, game_loop, 'human', 1) #creating button for easy mode
